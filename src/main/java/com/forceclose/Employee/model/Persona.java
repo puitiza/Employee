@@ -11,10 +11,10 @@ public class Persona {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-    @Column
+    private long id;
+    @Column(name = "name", nullable = false)
     private String name;
-    @Column
-    private String lastName;
+    @Column(name = "last_name", nullable = false)
+    private String last_name;
 
 }
