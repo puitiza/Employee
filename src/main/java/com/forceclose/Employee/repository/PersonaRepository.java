@@ -1,6 +1,6 @@
 package com.forceclose.Employee.repository;
 
-import com.forceclose.Employee.model.Persona;
+import com.forceclose.Employee.model.entity.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

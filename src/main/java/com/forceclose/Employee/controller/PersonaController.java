@@ -1,6 +1,6 @@
 package com.forceclose.Employee.controller;
 
-import com.forceclose.Employee.model.Persona;
+import com.forceclose.Employee.model.entity.Persona;
 import com.forceclose.Employee.services.PersonaService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

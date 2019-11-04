@@ -1,6 +1,6 @@
 package com.forceclose.Employee.services;
 
-import com.forceclose.Employee.model.Persona;
+import com.forceclose.Employee.model.entity.Persona;
 
 import java.util.List;
 
