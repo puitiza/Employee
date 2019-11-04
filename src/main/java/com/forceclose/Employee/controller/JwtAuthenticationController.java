@@ -1,8 +1,12 @@
 package com.forceclose.Employee.controller;
 
 import com.forceclose.Employee.config.JwtTokenUtil;
+import com.forceclose.Employee.model.entity.UserAccess;
 import com.forceclose.Employee.model.request.JwtRequest;
+import com.forceclose.Employee.model.request.UserRequest;
 import com.forceclose.Employee.model.response.JwtResponse;
+import com.forceclose.Employee.services.JwtUserDetailsService;
+import com.forceclose.Employee.services.JwtUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,20 +30,25 @@ public class JwtAuthenticationController {
 	private JwtTokenUtil jwtTokenUtil;
 
 	@Autowired
-	private UserDetailsService jwtInMemoryUserDetailsService;
+	private  JwtUserDetailsServiceImpl jwtUserDetailsService;
 
-	@RequestMapping(value = "/authenticate", method = RequestMethod.POST)
+	@PostMapping("/authenticate")
 	public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest)
 			throws Exception {
 
 		authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
 
-		final UserDetails userDetails = jwtInMemoryUserDetailsService
+		final UserDetails userDetails = jwtUserDetailsService
 				.loadUserByUsername(authenticationRequest.getUsername());
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
 
 		return ResponseEntity.ok(new JwtResponse(token));
+	}
+
+	@PostMapping("/register")
+	public ResponseEntity<?> registerUser(@RequestBody UserRequest user) throws Exception {
+		return ResponseEntity.ok( jwtUserDetailsService.register(user));
 	}
 
 	private void authenticate(String username, String password) throws Exception {

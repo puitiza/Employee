@@ -1,6 +1,6 @@
 package com.forceclose.Employee.config;
 
-import com.forceclose.Employee.services.JwtUserDetailsService;
+import com.forceclose.Employee.services.JwtUserDetailsServiceImpl;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -23,7 +23,7 @@ import java.io.IOException;
 public class JwtRequestFilter extends OncePerRequestFilter {
 
 	@Autowired
-	private JwtUserDetailsService jwtUserDetailsService;
+	private JwtUserDetailsServiceImpl jwtUserDetailsServiceImpl;
 
 	@Autowired
 	private JwtTokenUtil jwtTokenUtil;
@@ -53,7 +53,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
 		//Once we get the token validate it.
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 
-			UserDetails userDetails = this.jwtUserDetailsService.loadUserByUsername(username);
+			UserDetails userDetails = this.jwtUserDetailsServiceImpl.loadUserByUsername(username);
 
 			// if token is valid configure Spring Security to manually set authentication
 			if (jwtTokenUtil.validateToken(jwtToken, userDetails)) {

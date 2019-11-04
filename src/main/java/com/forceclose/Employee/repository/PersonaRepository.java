@@ -8,8 +8,4 @@ import java.util.List;
 
 @Repository
 public interface PersonaRepository extends JpaRepository<Persona, Long> {
-
-    List<Persona> findAll();
-    Persona findById(int id);
-
 }
