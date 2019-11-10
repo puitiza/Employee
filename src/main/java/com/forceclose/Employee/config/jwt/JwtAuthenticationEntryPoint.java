@@ -1,4 +1,4 @@
-package com.forceclose.Employee.config;
+package com.forceclose.Employee.config.jwt;
 
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;

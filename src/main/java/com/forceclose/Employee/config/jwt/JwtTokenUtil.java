@@ -1,4 +1,4 @@
-package com.forceclose.Employee.config;
+package com.forceclose.Employee.config.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -13,15 +13,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import static com.forceclose.Employee.config.jwt.JwtProperties.*;
+
 @Component
 public class JwtTokenUtil implements Serializable {
 
 	private static final long serialVersionUID = -2550185165626007488L;
-	
-	public static final long JWT_TOKEN_VALIDITY = 5*60*60;
-
-	@Value("${jwt.secret}")
-	private String secret;
 
 	//retrieve username from jwt token
 	public String getUsernameFromToken(String token) {
@@ -44,7 +41,7 @@ public class JwtTokenUtil implements Serializable {
 	}
 
 	private Claims getAllClaimsFromToken(String token) {
-		return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+		return Jwts.parser().setSigningKey(SECRET).parseClaimsJws(token).getBody();
 	}
 
 	//check if the token has expired
@@ -71,8 +68,11 @@ public class JwtTokenUtil implements Serializable {
 	   	compaction of the JWT to a URL-safe string */
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 
-		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000)).signWith(SignatureAlgorithm.HS512, secret).compact();
+		return Jwts.builder()
+				.setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
+				.setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY*1000))
+				.signWith(SignatureAlgorithm.HS512, SECRET)
+				.compact();
 	}
 
 	public Boolean canTokenBeRefreshed(String token) {

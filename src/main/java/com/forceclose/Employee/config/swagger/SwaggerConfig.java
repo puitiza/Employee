@@ -1,4 +1,4 @@
-package com.forceclose.Employee.config;
+package com.forceclose.Employee.config.swagger;
 
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static com.forceclose.Employee.config.jwt.JwtProperties.*;
 import static springfox.documentation.builders.PathSelectors.regex;
 
 @Configuration
@@ -29,7 +30,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
 
     StopWatch watch = new StopWatch("My Stop Watch");
-    public static final String AUTHORIZATION_HEADER = "Authorization";
+
     public static final String DEFAULT_INCLUDE_PATTERN = "/api/.*";
     private final Logger log = LoggerFactory.getLogger(SwaggerConfig.class);
 
@@ -78,7 +79,7 @@ public class SwaggerConfig {
 
 
     private ApiKey apiKey() {
-        return new ApiKey("JWT", AUTHORIZATION_HEADER, "header");
+        return new ApiKey("JWT", HEADER_STRING, "header");
     }
 
     private SecurityContext securityContext() {

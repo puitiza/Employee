@@ -1,12 +1,10 @@
 package com.forceclose.Employee.controller;
 
-import com.forceclose.Employee.config.JwtTokenUtil;
-import com.forceclose.Employee.model.entity.UserAccess;
+import com.forceclose.Employee.config.jwt.JwtTokenUtil;
 import com.forceclose.Employee.model.request.JwtRequest;
 import com.forceclose.Employee.model.request.UserRequest;
 import com.forceclose.Employee.model.response.JwtResponse;
-import com.forceclose.Employee.services.JwtUserDetailsService;
-import com.forceclose.Employee.services.JwtUserDetailsServiceImpl;
+import com.forceclose.Employee.services.config.JwtUserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,7 +12,6 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Objects;
