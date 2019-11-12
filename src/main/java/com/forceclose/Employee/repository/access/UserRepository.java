@@ -1,6 +1,6 @@
-package com.forceclose.Employee.repository;
+package com.forceclose.Employee.repository.access;
 
-import com.forceclose.Employee.model.entity.UserAccess;
+import com.forceclose.Employee.model.entity.access.UserAccess;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

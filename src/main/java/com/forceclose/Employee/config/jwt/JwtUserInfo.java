@@ -1,6 +1,7 @@
 package com.forceclose.Employee.config.jwt;
 
-import com.forceclose.Employee.model.entity.UserAccess;
+import com.forceclose.Employee.model.entity.access.UserAccess;
+import com.forceclose.Employee.model.entity.access.relation.UserRole;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,12 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 public class JwtUserInfo implements UserDetails {
 
     private UserAccess user;
 
-    public JwtUserInfo(UserAccess user){
+    public JwtUserInfo(UserAccess user) {
         this.user = user;
     }
 
@@ -21,18 +23,17 @@ public class JwtUserInfo implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         List<GrantedAuthority> authorities = new ArrayList<>();
 
-        // Extract list of permissions (name)
-        this.user.getPermissionList().forEach(p -> {
-            GrantedAuthority authority = new SimpleGrantedAuthority(p);
+        Set<UserRole> userRoles = this.user.getUserRole();
+        userRoles.forEach(p -> {
+            p.getRole().getRolePrivilege().forEach(r -> {
+                // Extract list of permissions (name) --- privilege
+                GrantedAuthority authority = new SimpleGrantedAuthority(r.getPrivilege().getName());
+                authorities.add(authority);
+            });
+            // Extract list of roles (ROLE_name)
+            GrantedAuthority authority = new SimpleGrantedAuthority(p.getRole().getName());
             authorities.add(authority);
         });
-
-        // Extract list of roles (ROLE_name)
-        this.user.getRoleList().forEach(r -> {
-            GrantedAuthority authority = new SimpleGrantedAuthority("ROLE_" + r);
-            authorities.add(authority);
-        });
-
         return authorities;
     }
 
@@ -63,6 +64,6 @@ public class JwtUserInfo implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.user.getActive() == 1;
+        return this.user.isActivated();
     }
 }

@@ -1,4 +1,4 @@
-package com.forceclose.Employee.model.entity;
+package com.forceclose.Employee.model.entity.business;
 
 import lombok.Data;
 

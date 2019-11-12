@@ -1,8 +1,8 @@
 package com.forceclose.Employee.services.business;
 
 import com.forceclose.Employee.controller.PersonaController;
-import com.forceclose.Employee.model.entity.Persona;
-import com.forceclose.Employee.repository.PersonaRepository;
+import com.forceclose.Employee.model.entity.business.Persona;
+import com.forceclose.Employee.repository.business.PersonaRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,9 +1,9 @@
 package com.forceclose.Employee.services.config;
 
 import com.forceclose.Employee.config.jwt.JwtUserInfo;
-import com.forceclose.Employee.model.entity.UserAccess;
+import com.forceclose.Employee.model.entity.access.UserAccess;
 import com.forceclose.Employee.model.request.UserRequest;
-import com.forceclose.Employee.repository.UserRepository;
+import com.forceclose.Employee.repository.access.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -35,9 +35,10 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService, JwtUserDet
 
     @Override
     public UserAccess register(UserRequest user) {
-        UserAccess newUser = new UserAccess(user.getUsername(),
+        /*UserAccess newUser = new UserAccess(user.getUsername(),
                 passwordEncoder.encode(user.getPassword()),
                 user.getRoles(), user.getPermissions());
-        return userRepository.save(newUser);
+        return userRepository.save(newUser);*/
+        return  null;
     }
 }
