@@ -20,14 +20,9 @@ public class RoleAccess {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private boolean activated;
-
-    @Column(nullable = false)
-    private Date dateCreated;
-
-    @Column
-    private Date dateLastUpdated;
+    @OneToOne
+    @JoinColumn(name="idHistoricalAccess")
+    private HistoricalAccess historicalAccess;
 
     @OneToMany(mappedBy = "role")
     private Set<UserRole> userRole;
@@ -73,10 +68,7 @@ public class RoleAccess {
     @Override
     public String toString() {
         return "RoleAccess [id=" + id + "]" + "\r\n" +
-                "[name=" + name + "]" + "\r\n" +
-                "[activated=" + activated + "]" + "\r\n" +
-                "[dateCreated=" + dateCreated + "]" + "\r\n" +
-                "[dateLastUpdated=" + dateLastUpdated + "]";
+                "[name=" + name + "]";
     }
 
 }

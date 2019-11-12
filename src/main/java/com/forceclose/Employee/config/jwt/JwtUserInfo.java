@@ -64,6 +64,7 @@ public class JwtUserInfo implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return this.user.isActivated();
+        //return this.user.isActivated();
+        return true;
     }
 }

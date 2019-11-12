@@ -19,14 +19,9 @@ public class PrivilegeAccess {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
-    private boolean activated;
-
-    @Column(nullable = false)
-    private Date dateCreated;
-
-    @Column
-    private Date dateLastUpdated;
+    @OneToOne
+    @JoinColumn(name="idHistoricalAccess")
+    private HistoricalAccess historicalAccess;
 
     @OneToMany(mappedBy = "privilege")
     private Set<RolePrivilege> rolePrivilege;
@@ -65,9 +60,6 @@ public class PrivilegeAccess {
     @Override
     public String toString() {
         return "PrivilegeAccess [id=" + id + "]" + "\r\n" +
-                "[name=" + name + "]" + "\r\n" +
-                "[activated=" + activated + "]" + "\r\n" +
-                "[dateCreated=" + dateCreated + "]" + "\r\n" +
-                "[dateLastUpdated=" + dateLastUpdated + "]";
+                "[name=" + name + "]";
     }
 }

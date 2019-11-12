@@ -24,14 +24,9 @@ public class UserAccess {
     @JsonIgnore
     private String password;
 
-    @Column(nullable = false)
-    private boolean activated;
-
-    @Column(nullable = false)
-    private Date dateCreated;
-
-    @Column
-    private Date dateLastUpdated;
+    @OneToOne
+    @JoinColumn(name="idHistoricalAccess")
+    private HistoricalAccess historicalAccess;
 
     //  this is a way to call many to many relation but customization the relation
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
@@ -75,10 +70,7 @@ public class UserAccess {
     public String toString() {
         return "UserAccess [id=" + id + "]" + "\r\n" +
                 "[username=" + username + "]" + "\r\n" +
-                "[password=" + password + "]" + "\r\n" +
-                "[activated=" + activated + "]" + "\r\n" +
-                "[dateCreated=" + dateCreated + "]" + "\r\n" +
-                "[dateLastUpdated=" + dateLastUpdated + "]";
+                "[password=" + password + "]" ;
     }
 
 }
