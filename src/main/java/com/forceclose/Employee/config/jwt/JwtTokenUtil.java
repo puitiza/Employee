@@ -4,9 +4,13 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -53,6 +57,12 @@ public class JwtTokenUtil implements Serializable {
 	private Boolean ignoreTokenExpiration(String token) {
 		// here you specify tokens, for that the expiration is ignored
 		return false;
+	}
+
+	public String getUsernameLogged() {
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		String token = request.getHeader("Authorization").split(" ")[1];
+		return getUsernameFromToken(token);
 	}
 
 	//generate token for user

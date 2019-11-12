@@ -1,5 +1,6 @@
 package com.forceclose.Employee.services.business;
 
+import com.forceclose.Employee.config.jwt.JwtTokenUtil;
 import com.forceclose.Employee.controller.PersonaController;
 import com.forceclose.Employee.model.entity.business.Persona;
 import com.forceclose.Employee.repository.business.PersonaRepository;
@@ -8,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -16,6 +18,8 @@ public class PersonaServiceImpl implements PersonaService {
     @Autowired
     private PersonaRepository personaRepository;
     private Logger logger = LoggerFactory.getLogger(PersonaController.class);
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Override
     public List<Persona> findAll() {
@@ -24,6 +28,9 @@ public class PersonaServiceImpl implements PersonaService {
 
     @Override
     public Persona register(Persona employee) {
+        employee.setActivated(true);
+        employee.setDateCreated(new Date());
+        employee.setUserCreated(jwtTokenUtil.getUsernameLogged());
         return personaRepository.save(employee);
     }
 

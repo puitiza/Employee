@@ -2,10 +2,11 @@ package com.forceclose.Employee.model.request;
 
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 public class UserRequest {
     private String username;
     private String password;
-    private String roles;
-    private String permissions;
+    private List<String> roles;
 }

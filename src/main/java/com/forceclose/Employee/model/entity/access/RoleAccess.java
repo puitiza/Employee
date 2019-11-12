@@ -1,5 +1,6 @@
 package com.forceclose.Employee.model.entity.access;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.forceclose.Employee.model.entity.access.relation.RolePrivilege;
 import com.forceclose.Employee.model.entity.access.relation.UserRole;
 import lombok.Data;
@@ -23,6 +24,14 @@ public class RoleAccess {
     @OneToOne
     @JoinColumn(name="idHistoricalAccess")
     private HistoricalAccess historicalAccess;
+
+    @Column
+    @JsonIgnore
+    private String userCreated;
+
+    @Column
+    @JsonIgnore
+    private String userLastUpdated;
 
     @OneToMany(mappedBy = "role")
     private Set<UserRole> userRole;

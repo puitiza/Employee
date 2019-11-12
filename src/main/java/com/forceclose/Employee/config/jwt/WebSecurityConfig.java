@@ -85,14 +85,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // configure access rules
                 // dont authenticate this particular request
-                .antMatchers(HttpMethod.POST, "/authenticate", "/register",
+                .antMatchers(HttpMethod.POST, "/authenticate",
                         "/v2/api-docs",
                         "/configuration/ui",
                         "/swagger-resources/**",
                         "/configuration/security",
                         "/swagger-ui.html",
                         "/webjars/**").permitAll()
-                .antMatchers("/api/employees").hasRole("ADMIN")
+                .antMatchers("/api/employees","/register").hasRole("ADMIN")
                 //.antMatchers("/api/employees/*").hasAuthority("READ_PRIVILEGE")
                 // all other requests need to be authenticated
                 .anyRequest().authenticated();

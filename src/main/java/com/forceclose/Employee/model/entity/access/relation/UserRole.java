@@ -1,6 +1,6 @@
 package com.forceclose.Employee.model.entity.access.relation;
 
-import com.forceclose.Employee.model.entity.access.HistoricalAccess;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.forceclose.Employee.model.entity.access.RoleAccess;
 import com.forceclose.Employee.model.entity.access.UserAccess;
 import lombok.Data;
@@ -27,9 +27,22 @@ public class UserRole {
     private RoleAccess role;
 
     // additional fields
-    @OneToOne
-    @JoinColumn(name="idHistoricalAccess")
-    private HistoricalAccess historicalAccess;
+    private boolean activated;
+
+    @Column(nullable = false)
+    //@Temporal(TemporalType.TIMESTAMP)
+    private Date dateCreated;
+
+    @Column
+    private Date dateLastUpdated;
+
+    @Column
+    @JsonIgnore
+    private String userCreated;
+
+    @Column
+    @JsonIgnore
+    private String userLastUpdated;
 
     @Override
     public boolean equals(Object o) {
@@ -52,6 +65,9 @@ public class UserRole {
     public String toString() {
         return "UserRole_Relation[id=" + id + "]" + "\r\n" +
                 "[user=" + user + "]" + "\r\n" +
-                "[role=" + role + "]" ;
+                "[role=" + role + "]" + "\r\n" +
+                "[activated=" + activated + "]" + "\r\n" +
+                "[dateCreated=" + dateCreated + "]" + "\r\n" +
+                "[dateLastUpdated=" + dateLastUpdated + "]";
     }
 }

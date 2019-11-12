@@ -14,7 +14,7 @@ import java.util.Set;
 public class UserAccess {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column(nullable = false, unique = true)
@@ -28,8 +28,17 @@ public class UserAccess {
     @JoinColumn(name="idHistoricalAccess")
     private HistoricalAccess historicalAccess;
 
+    @Column
+    @JsonIgnore
+    private String userCreated;
+
+    @Column
+    @JsonIgnore
+    private String userLastUpdated;
+
     //  this is a way to call many to many relation but customization the relation
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "user")
+    @JsonIgnore
     private Set<UserRole> userRole;
 
     /* This is another kind of way call relation Many to Many

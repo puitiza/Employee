@@ -1,9 +1,16 @@
 package com.forceclose.Employee.services.config;
 
+import com.forceclose.Employee.config.jwt.JwtAuthorizationFilter;
+import com.forceclose.Employee.config.jwt.JwtTokenUtil;
 import com.forceclose.Employee.config.jwt.JwtUserInfo;
 import com.forceclose.Employee.model.entity.access.UserAccess;
+import com.forceclose.Employee.model.entity.access.relation.UserRole;
 import com.forceclose.Employee.model.request.UserRequest;
+import com.forceclose.Employee.repository.access.RoleRepository;
 import com.forceclose.Employee.repository.access.UserRepository;
+import com.forceclose.Employee.repository.access.relation.User_RoleRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -11,11 +18,25 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
 @Service
 public class JwtUserDetailsServiceImpl implements UserDetailsService, JwtUserDetailsService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
+    private User_RoleRepository user_RoleRepository;
+
+    @Autowired
+    private JwtTokenUtil jwtTokenUtil;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -28,17 +49,36 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService, JwtUserDet
                 throw new UsernameNotFoundException("User not found with username: " + username);
             }
             return new JwtUserInfo(user);
-        }catch (Exception e){
-            return  null;
+        } catch (Exception e) {
+            return null;
         }
     }
 
+    @Transactional
     @Override
     public UserAccess register(UserRequest user) {
-        /*UserAccess newUser = new UserAccess(user.getUsername(),
-                passwordEncoder.encode(user.getPassword()),
-                user.getRoles(), user.getPermissions());
-        return userRepository.save(newUser);*/
-        return  null;
+        UserAccess newUser = new UserAccess();
+        newUser.setUsername(user.getUsername());
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setActivated(true);
+        newUser.setDateCreated(new Date());
+        newUser.setUserCreated(jwtTokenUtil.getUsernameLogged());
+        UserAccess finalUser = userRepository.save(newUser);
+
+        final Set<UserRole> userRoles = new HashSet<>();
+        user.getRoles().forEach(p -> {
+
+            UserRole newUserRole = new UserRole();
+            newUserRole.setUser(finalUser);
+            newUserRole.setRole(roleRepository.findByName(p));
+            newUserRole.setActivated(true);
+            newUserRole.setDateCreated(new Date());
+
+            UserRole userRole = user_RoleRepository.save(newUserRole);
+            userRoles.add(userRole);
+        });
+        finalUser.setUserRole(userRoles);
+        return userRepository.save(finalUser);
+
     }
 }
