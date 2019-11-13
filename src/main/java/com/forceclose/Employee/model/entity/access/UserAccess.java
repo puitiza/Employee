@@ -24,9 +24,14 @@ public class UserAccess {
     @JsonIgnore
     private String password;
 
-    @OneToOne
-    @JoinColumn(name="idHistoricalAccess")
-    private HistoricalAccess historicalAccess;
+    @Column(nullable = false)
+    private boolean activated;
+
+    @Column(nullable = false)
+    private Date dateCreated;
+
+    @Column
+    private Date dateLastUpdated;
 
     @Column
     @JsonIgnore

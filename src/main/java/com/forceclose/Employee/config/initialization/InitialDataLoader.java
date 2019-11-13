@@ -30,9 +30,6 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     private PrivilegeRepository privilegeRepository;
 
     @Autowired
-    private HistoricalRepository historicalRepository;
-
-    @Autowired
     private User_RoleRepository user_RoleRepository;
 
     @Autowired
@@ -41,8 +38,6 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    private UserAccess firstUser;
-
     @Override
     @Transactional
     public void onApplicationEvent(ContextRefreshedEvent event) {
@@ -50,10 +45,6 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         if (alreadySetup) {
             return;
         }
-
-        //Create initial user
-        firstUser = createUserIfNotFound("administrator", "administrator");
-
         // == create initial privileges
         final PrivilegeAccess readPrivilege = createPrivilegeIfNotFound("READ_PRIVILEGE");
         final PrivilegeAccess writePrivilege = createPrivilegeIfNotFound("WRITE_PRIVILEGE");
@@ -98,14 +89,10 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
         PrivilegeAccess privilege = privilegeRepository.findByName(name);
         if (privilege == null) {
-
             privilege = new PrivilegeAccess(name);
-            PrivilegeAccess finalPrivilegeAccess = privilegeRepository.save(privilege);
-
-            // Register his historical and assigned historical to user
-            finalPrivilegeAccess.setHistoricalAccess(
-                    historicalRepository.save(new HistoricalAccess(true, new Date(), firstUser)));
-            privilege = privilegeRepository.save(finalPrivilegeAccess);
+            privilege.setActivated(true);
+            privilege.setDateCreated(new Date());
+            privilegeRepository.save(privilege);
         }
         return privilege;
     }
@@ -115,24 +102,19 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
         RoleAccess role = roleRepository.findByName(name);
         if (role == null) {
-
             role = new RoleAccess(name);
+            role.setActivated(true);
+            role.setDateCreated(new Date());
+
             RoleAccess finalRole = roleRepository.save(role);
-
-            // Register his historical assigned historical to user
-            finalRole.setHistoricalAccess(
-                    historicalRepository.save(new HistoricalAccess(true, new Date(), firstUser)));
-
             final Set<RolePrivilege> rolePrivileges = new HashSet<>();
 
             privileges.forEach(p -> {
                 RolePrivilege newRolePrivilege = new RolePrivilege();
                 newRolePrivilege.setRole(finalRole);
                 newRolePrivilege.setPrivilege(p);
-
-                //assigned historical to user
-                newRolePrivilege.setHistoricalAccess(
-                        historicalRepository.save(new HistoricalAccess(true, new Date(), firstUser)));
+                newRolePrivilege.setActivated(true);
+                newRolePrivilege.setDateCreated(new Date());
 
                 RolePrivilege userRole = role_privilegeRepository.save(newRolePrivilege);
                 rolePrivileges.add(userRole);
@@ -152,12 +134,10 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
             user = new UserAccess();
             user.setUsername(username);
             user.setPassword(passwordEncoder.encode(password));
+            user.setActivated(true);
+            user.setDateCreated(new Date());
+
             UserAccess finalUser = userRepository.save(user);
-
-            // Register his historical assigned historical to user
-            finalUser.setHistoricalAccess(
-                    historicalRepository.save(new HistoricalAccess(true, new Date(), firstUser)));
-
             //save role to user
             final Set<UserRole> userRoles = new HashSet<>();
 
@@ -165,40 +145,14 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
                 UserRole newUserRole = new UserRole();
                 newUserRole.setUser(finalUser);
                 newUserRole.setRole(p);
-
-                //assigned historical to user
-                newUserRole.setHistoricalAccess(
-                        historicalRepository.save(new HistoricalAccess(true, new Date(), firstUser)));
+                newUserRole.setActivated(true);
+                newUserRole.setDateCreated(new Date());
 
                 UserRole userRole = user_RoleRepository.save(newUserRole);
                 userRoles.add(userRole);
             });
             //update relation role to user
             finalUser.setUserRole(userRoles);
-            user = userRepository.save(finalUser);
-        }
-        return user;
-    }
-
-    @Transactional
-    private UserAccess createUserIfNotFound(final String username, final String password) {
-        //save user
-        UserAccess user = userRepository.findByUsername(username);
-
-        if (user == null) {
-
-            user = new UserAccess();
-            user.setUsername(username);
-            user.setPassword(passwordEncoder.encode(password));
-            UserAccess finalUser = userRepository.save(user);
-
-            HistoricalAccess historical = new HistoricalAccess();
-            historical.setActivated(true);
-            historical.setDateCreated(new Date());
-            historical.setUserCreated(finalUser);
-
-            // Register his historical and assigned historical to user
-            finalUser.setHistoricalAccess(historicalRepository.save(historical));
             user = userRepository.save(finalUser);
         }
         return user;

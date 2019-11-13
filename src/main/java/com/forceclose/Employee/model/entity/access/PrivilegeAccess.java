@@ -20,9 +20,14 @@ public class PrivilegeAccess {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToOne
-    @JoinColumn(name="idHistoricalAccess")
-    private HistoricalAccess historicalAccess;
+    @Column(nullable = false)
+    private boolean activated;
+
+    @Column(nullable = false)
+    private Date dateCreated;
+
+    @Column
+    private Date dateLastUpdated;
 
     @Column
     @JsonIgnore
