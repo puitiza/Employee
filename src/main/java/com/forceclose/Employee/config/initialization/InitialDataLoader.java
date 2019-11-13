@@ -1,9 +1,13 @@
 package com.forceclose.Employee.config.initialization;
 
-import com.forceclose.Employee.model.entity.access.*;
+import com.forceclose.Employee.model.entity.access.PrivilegeAccess;
+import com.forceclose.Employee.model.entity.access.RoleAccess;
+import com.forceclose.Employee.model.entity.access.UserAccess;
 import com.forceclose.Employee.model.entity.access.relation.RolePrivilege;
 import com.forceclose.Employee.model.entity.access.relation.UserRole;
-import com.forceclose.Employee.repository.access.*;
+import com.forceclose.Employee.repository.access.PrivilegeRepository;
+import com.forceclose.Employee.repository.access.RoleRepository;
+import com.forceclose.Employee.repository.access.UserRepository;
 import com.forceclose.Employee.repository.access.relation.Role_PrivilegeRepository;
 import com.forceclose.Employee.repository.access.relation.User_RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
