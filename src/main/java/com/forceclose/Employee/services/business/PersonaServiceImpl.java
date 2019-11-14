@@ -30,7 +30,7 @@ public class PersonaServiceImpl implements PersonaService {
     public Persona register(Persona employee) {
         employee.setActivated(true);
         employee.setDateCreated(new Date());
-        employee.setUserCreated(jwtTokenUtil.getUsernameLogged());
+        //employee.setUserCreated(jwtTokenUtil.getUsernameLogged());
         return personaRepository.save(employee);
     }
 

@@ -37,4 +37,6 @@ public class Persona {
     @Column
     @JsonIgnore
     private String userLastUpdated;
+
+
 }

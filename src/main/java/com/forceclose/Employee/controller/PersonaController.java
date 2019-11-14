@@ -1,6 +1,5 @@
 package com.forceclose.Employee.controller;
 
-import com.forceclose.Employee.config.jwt.JwtTokenUtil;
 import com.forceclose.Employee.model.entity.business.Persona;
 import com.forceclose.Employee.services.business.PersonaService;
 import org.slf4j.Logger;
@@ -9,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -43,6 +44,17 @@ public class PersonaController{
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             //return null;
         }
+    }
+
+    @Scheduled(cron = "0/20 * * * * ?")
+    public void publish() {
+        Persona persona = new Persona();
+        persona.setName("anthony");
+        persona.setActivated(true);
+        persona.setLast_name("puitiza");
+        persona.setDateCreated(new Date());
+        Persona employee_Registered = personaService.register(persona);
+        logger.info("Average value is {}", employee_Registered);
     }
 
     @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
