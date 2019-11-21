@@ -46,7 +46,7 @@ public class PersonaController{
         }
     }
 
-    @Scheduled(cron = "0/20 * * * * ?")
+    /*@Scheduled(cron = "0/20 * * * * ?")
     public void publish() {
         Persona persona = new Persona();
         persona.setName("anthony");
@@ -55,7 +55,7 @@ public class PersonaController{
         persona.setDateCreated(new Date());
         Persona employee_Registered = personaService.register(persona);
         logger.info("Average value is {}", employee_Registered);
-    }
+    }*/
 
     @PreAuthorize("hasAuthority('READ_PRIVILEGE')")
     @GetMapping("/employees/{id}")
