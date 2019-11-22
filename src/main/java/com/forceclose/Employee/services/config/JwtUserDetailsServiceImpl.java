@@ -9,6 +9,7 @@ import com.forceclose.Employee.model.request.UserRequest;
 import com.forceclose.Employee.repository.access.RoleRepository;
 import com.forceclose.Employee.repository.access.UserRepository;
 import com.forceclose.Employee.repository.access.relation.User_RoleRepository;
+import com.forceclose.Employee.services.mail.EmailServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,9 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService, JwtUserDet
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    public EmailServiceImpl emailService;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -78,7 +82,12 @@ public class JwtUserDetailsServiceImpl implements UserDetailsService, JwtUserDet
             userRoles.add(userRole);
         });
         finalUser.setUserRole(userRoles);
-        return userRepository.save(finalUser);
+        UserAccess newUserAccess = userRepository.save(finalUser);
+        emailService.sendSimpleMessage("anthony.puitiza.02@gmail.com",
+                "CREACIÓN DE NUEVO USUARIO: " + newUserAccess.getUsername(),
+                "Se ha creado con éxito este nuevo usuario perro");
+
+        return newUserAccess;
 
     }
 }
