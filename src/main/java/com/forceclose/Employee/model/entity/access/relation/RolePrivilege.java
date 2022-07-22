@@ -3,7 +3,6 @@ package com.forceclose.Employee.model.entity.access.relation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.forceclose.Employee.model.entity.access.PrivilegeAccess;
 import com.forceclose.Employee.model.entity.access.RoleAccess;
-import com.google.common.base.MoreObjects;
 import lombok.Data;
 
 import javax.persistence.*;

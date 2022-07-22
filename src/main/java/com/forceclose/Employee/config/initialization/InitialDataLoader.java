@@ -89,7 +89,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     }
 
     @Transactional
-    private PrivilegeAccess createPrivilegeIfNotFound(final String name) {
+    PrivilegeAccess createPrivilegeIfNotFound(final String name) {
 
         PrivilegeAccess privilege = privilegeRepository.findByName(name);
         if (privilege == null) {
@@ -102,7 +102,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     }
 
     @Transactional
-    private RoleAccess createRoleIfNotFound(final String name, final Collection<PrivilegeAccess> privileges) {
+    RoleAccess createRoleIfNotFound(final String name, final Collection<PrivilegeAccess> privileges) {
 
         RoleAccess role = roleRepository.findByName(name);
         if (role == null) {
@@ -131,7 +131,7 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
     }
 
     @Transactional
-    private UserAccess createUserIfNotFound(final String username, final String password, final Collection<RoleAccess> roles) {
+    UserAccess createUserIfNotFound(final String username, final String password, final Collection<RoleAccess> roles) {
         //save user
         UserAccess user = userRepository.findByUsername(username);
         if (user == null) {
